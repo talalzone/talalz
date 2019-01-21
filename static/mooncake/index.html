@@ -21,7 +21,7 @@
     <meta property="og:description" content="Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable. The conventional methods usually comprise of several conditional checks,">
     <meta property="og:url" content="http://localhost:2368/mooncake/">
     <meta property="article:published_time" content="2019-01-21T02:38:40.000Z">
-    <meta property="article:modified_time" content="2019-01-21T03:09:56.000Z">
+    <meta property="article:modified_time" content="2019-01-21T03:20:31.000Z">
     <meta property="article:author" content="https://www.facebook.com/kein.username">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Mooncake: A simplistic validation language">
@@ -50,7 +50,7 @@
     "headline": "Mooncake: A simplistic validation language",
     "url": "http://localhost:2368/mooncake/",
     "datePublished": "2019-01-21T02:38:40.000Z",
-    "dateModified": "2019-01-21T03:09:56.000Z",
+    "dateModified": "2019-01-21T03:20:31.000Z",
     "description": "Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable. The conventional methods usually comprise of several conditional checks,",
     "mainEntityOfPage": {
         "@type": "WebPage",
@@ -115,11 +115,11 @@ ghost.init({
             <section class="post-full-content">
                 <div class="post-content">
                     <div class="kg-card-markdown"><p>Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable.</p>
-<p>The conventional methods usually comprise of several conditional checks, or perhaps a fancy framework on top using designs like method-chaining etc. After witnessing tremendously huge code files containing such verbose statements and checks. It only came naturally to take the usual behavior of conditionals and turn it into a simplistic language. The language may seem to be specific for a certain solution, but the idea is have it evolve over time while always keeping the simplicity in mind.</p>
+<p>The conventional methods usually comprise of several conditional checks, or perhaps a fancy framework on top using designs like method-chaining etc. After witnessing tremendously huge code files containing such verbose statements and checks. It only comes naturally to take the usual behavior of conditionals and turn it into a simplistic language. The language may seem to be specific for a certain solution, but the idea is have it evolve over time while always keeping simplicity in mind.</p>
 <p>Meet "<strong><a href="https://github.com/talal830/mooncake">Mooncake</a></strong>", a descriptive yet less verbose validation language.</p>
 <p>The name is inspired from the character <a href="http://final-space.wikia.com/wiki/Mooncake">Mooncake</a> in the tv-series <a href="https://en.wikipedia.org/wiki/Final_Space">Final Space</a>. Mooncake has a minimal vocabulary e.g., "Chookity Dookity", "Chookity-pah", "Woooahhh". However, he manages to describe his sentiments within his limited vocab... and so the inspiration :)</p>
 <h2 id="howitworks">How it works</h2>
-<p>The language is built with <a href="https://github.com/antlr/antlr4/blob/master/doc/go-target.md">Antlr</a> for GoLang runtime. Antlr is a compiler-compiler which makes it easer to design and test languages.</p>
+<p>The language is built with <a href="https://github.com/antlr/antlr4/blob/master/doc/go-target.md">Antlr</a> for Golang runtime. Antlr is a compiler-compiler which makes it easer to design and test languages.</p>
 <p>Currently, objects in Json form can be handled, since behind the scene JsonPath is being used to locate attributes in objects. But this would eventually be replaced by language specific constructs e.g., Golang's structs using methods like reflection.</p>
 <p>So to begin with, we need to compose rules that validate different fields/attributes of an object. A simplistic rule composition is as follows:</p>
 <pre><code>item.id eq nil =&gt; [E0123, 'id can't be null']!!! # this causes fatal error
