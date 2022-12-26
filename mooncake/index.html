@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Mooncake: A simplistic validation language</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css?v=d008b209e2" />
+
+    <link rel="canonical" href="http://talal.zone/mooncake/" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Talal&#x27;s Zone" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Mooncake: A simplistic validation language" />
+    <meta property="og:description" content="Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable.
+
+The conventional methods usually comprise of several conditional checks," />
+    <meta property="og:url" content="http://talal.zone/mooncake/" />
+    <meta property="og:image" content="http://talal.zone/content/images/2022/12/maxresdefault.jpeg" />
+    <meta property="article:published_time" content="2021-01-21T23:32:00.000Z" />
+    <meta property="article:modified_time" content="2022-12-26T13:21:30.000Z" />
+    <meta property="article:publisher" content="https://www.facebook.com/ghost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mooncake: A simplistic validation language" />
+    <meta name="twitter:description" content="Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable.
+
+The conventional methods usually comprise of several conditional checks," />
+    <meta name="twitter:url" content="http://talal.zone/mooncake/" />
+    <meta name="twitter:image" content="http://talal.zone/content/images/2022/12/maxresdefault.jpeg" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Talal Ahmed" />
+    <meta name="twitter:site" content="@ghost" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Talal&#x27;s Zone",
+        "url": "http://talal.zone/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://talal.zone/favicon.ico"
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Talal Ahmed",
+        "url": "http://talal.zone/author/talal/",
+        "sameAs": []
+    },
+    "headline": "Mooncake: A simplistic validation language",
+    "url": "http://talal.zone/mooncake/",
+    "datePublished": "2021-01-21T23:32:00.000Z",
+    "dateModified": "2022-12-26T13:21:30.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "http://talal.zone/content/images/2022/12/maxresdefault.jpeg",
+        "width": 1280,
+        "height": 720
+    },
+    "description": "Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable.\n\nThe conventional methods usually comprise of several conditional checks, or perhaps a fancy framework on top using designs like method-chaining, schema validation etc. Looking at those tremendously huge code files with such ",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://talal.zone/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.26" />
+    <link rel="alternate" type="application/rss+xml" title="Talal&#x27;s Zone" href="http://talal.zone/rss/" />
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="ac9d5bd4fa60794d120585bc5e" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://talal.zone/" crossorigin="anonymous"></script>
+    <script defer src="/public/cards.min.js?v=d008b209e2"></script>
+    <link rel="stylesheet" type="text/css" href="/public/cards.min.css?v=d008b209e2">
+    <script defer src="/public/comment-counts.min.js?v=d008b209e2" data-ghost-comments-counts-api="http://talal.zone/members/api/comments/counts/"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/brands.min.css" integrity="sha512-+oRH6u1nDGSm3hH8poU85YFIVTdSnS2f+texdPGrURaJh8hzmhMiZrQth6l56P4ZQmxeZzd2DqVEMqQoJ8J89A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- <style>
+.gh-head {
+    position: -webkit-sticky; /* Older Safari browsers */
+    position: sticky; /* Most other modern browsers including Safari */
+    top: 0;
+    z-index: 4000;
+}
+</style> -->
+
+<style>
+    .share-block {
+        margin-top: 8rem;
+        text-align: center;
+    }
+    .share-block span {
+        display: inline-block;
+        font-weight: bold;
+        margin-right: 1rem;
+        font-size: 2rem;
+    }
+    .share-block a {
+        display: inline-block;
+        transition: all 0.3s;
+        margin: 0 0.25rem;
+    }
+    .share-block a:hover {
+        transform: scale(1.1);
+    }
+</style>
+
+<style>
+    .gh-head-menu .nav-twitter a,
+    .gh-head-menu .nav-github a,
+    .gh-head-menu .nav-linkedin a {
+        font-size: 0 !important;
+    }
+
+    .gh-head-menu .nav-twitter a::before,
+    .gh-head-menu .nav-github a::before,
+    .gh-head-menu .nav-linkedin a::before {
+        font-family: "Font Awesome 6 Brands";
+        display: inline-block;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .gh-head-menu .nav-twitter a::before {content: "\f099"}
+    .gh-head-menu .nav-github a::before {content: "\f09b"}
+    .gh-head-menu .nav-linkedin a::before {content: "\f08c"}
+</style>
+
+<style>
+.reading-progress {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 5px; /* Progress bar height */
+  background: #c5d2d9; /* Progress bar background color */
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; /* Hide default progress bar */
+}
+
+.reading-progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+.reading-progress::-webkit-progress-value {
+  background: var(--ghost-accent-color); /* Progress bar color */
+}
+</style><style>:root {--ghost-accent-color: #091425;}</style>
+
+</head>
+<body class="post-template is-head-left-logo has-cover">
+<div class="viewport">
+
+    <header id="gh-head" class="gh-head outer">
+        <div class="gh-head-inner inner">
+            <div class="gh-head-brand">
+                <a class="gh-head-logo no-image" href="http://talal.zone">
+                        Talal&#x27;s Zone
+                </a>
+                <button class="gh-search gh-icon-btn" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-home"><a href="http://talal.zone/">Home</a></li>
+    <li class="nav-github"><a href="https://github.com/talal830">Github</a></li>
+    <li class="nav-linkedin"><a href="https://linkedin.com/in/talal830/">LinkedIn</a></li>
+    <li class="nav-twitter"><a href="https://twitter.com">Twitter</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="site-content">
+        
+
+<progress class="reading-progress" value="0" max="100" aria-label="Reading progress"></progress>
+
+
+<main id="site-main" class="site-main">
+<article class="article post featured image-small">
+
+    <header class="article-header gh-canvas">
+
+        <div class="article-tag post-card-tags">
+                <span class="post-card-featured"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.49365 4.58752C3.53115 6.03752 2.74365 7.70002 2.74365 9.25002C2.74365 10.6424 3.29678 11.9778 4.28134 12.9623C5.26591 13.9469 6.60127 14.5 7.99365 14.5C9.38604 14.5 10.7214 13.9469 11.706 12.9623C12.6905 11.9778 13.2437 10.6424 13.2437 9.25002C13.2437 6.00002 10.9937 3.50002 9.16865 1.68127L6.99365 6.25002L4.49365 4.58752Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg> Featured</span>
+        </div>
+
+        <h1 class="article-title">Mooncake: A simplistic validation language</h1>
+
+
+        <div class="article-byline">
+        <section class="article-byline-content">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+                    <a href="/author/talal/" class="author-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg>
+</a>
+                </li>
+            </ul>
+
+            <div class="article-byline-meta">
+                <h4 class="author-name"><a href="/author/talal/">Talal Ahmed</a></h4>
+                <div class="byline-meta-content">
+                    <time class="byline-meta-date" datetime="2021-01-21">Jan 21, 2021</time>
+                        <span class="byline-reading-time"><span class="bull">&bull;</span> 3 min read</span>
+                </div>
+            </div>
+
+        </section>
+        </div>
+
+            <figure class="article-image">
+                <img
+                    srcset="/content/images/size/w300/2022/12/maxresdefault.jpeg 300w,
+                            /content/images/size/w600/2022/12/maxresdefault.jpeg 600w,
+                            /content/images/size/w1000/2022/12/maxresdefault.jpeg 1000w,
+                            /content/images/size/w2000/2022/12/maxresdefault.jpeg 2000w"
+                    sizes="(min-width: 1400px) 1400px, 92vw"
+                    src="/content/images/size/w2000/2022/12/maxresdefault.jpeg"
+                    alt="Mooncake: A simplistic validation language"
+                />
+                    <figcaption>Garry meets Mooncake [Credits: Final Space]</figcaption>
+            </figure>
+
+    </header>
+
+    <section class="gh-content gh-canvas">
+        <p>Validating objects in code is an important part of almost every other project. Having gone through significantly large code bases where objects easily get more complex over time. The conventional validation methods can grow even more verbose, less scalable and maintainable.</p><p>The conventional methods usually comprise of several conditional checks, or perhaps a fancy framework on top using designs like method-chaining, schema validation etc. Looking at those tremendously huge code files with such verbose statements and checks. It only comes naturally to take the usual behaviour of conditionals and turn it into a simplistic language. The language may seem to be specific for a certain solution, but the idea is have it evolve over time while always keeping simplicity in mind.</p><p>Meet "<strong><strong><a href="https://github.com/talal830/mooncake">Mooncake</a></strong></strong>", a descriptive yet less verbose validation language.</p><p>The name is inspired from the character <a href="http://final-space.wikia.com/wiki/Mooncake">Mooncake</a> in the tv-series <a href="https://en.wikipedia.org/wiki/Final_Space">Final Space</a>. Mooncake has a minimal vocabulary; yet he manages to convey his feelings conveniently...thus the inspiration :)</p><h2 id="how-it-works"><strong>How it works</strong></h2><p>The language is built with <a href="https://github.com/antlr/antlr4/blob/master/doc/go-target.md">Antlr</a> for Golang runtime. Antlr is a compiler-compiler which makes it easer to design and test languages.</p><p>Currently, objects in Json form can be handled, since behind the scene JsonPath is being used to locate attributes in objects. But this would eventually be replaced by language specific constructs e.g., Golang's structs using methods like reflection.</p><p>So to begin with, we need to compose rules that validate different fields/attributes of an object. A simplistic rule composition is as follows:</p><pre><code>item.id eq nil =&gt; [E0123, 'id can't be null']!!! # this causes fatal error
+</code></pre><blockquote><em><em>This says:</em></em><br><em><em>if <em><em>expression:</em></em> <code>item.id eq nil</code> holds</em></em><br><em><em>then <em><em>implication:</em></em> <code>[E0123, 'id can't be null']!!!</code></em></em></blockquote><p>Breaking down further we have:</p><p><em><em>expression:</em></em></p><ul><li><code>item.id</code> -&gt; identifier (attribute path)</li><li><code>eq</code> -&gt; operator (equal)</li><li><code>nil</code> -&gt; literal (null)</li></ul><p><em><em>implication:</em></em></p><ul><li><code>E0123</code> -&gt; Error code</li><li><code>'id can't be null'</code> -&gt; Error message</li><li><code>!!!</code> -&gt; Error severity, here three exclamation marks mean Fatal</li><li><code># this causes ...</code> -&gt; Can be any statement related comment (not required)</li></ul><p>Now, lets see how a group of statements look like:</p><pre><code>item.id   eq nil =&gt; [E0123, 'id can't be null']!!!  # this is a fatal error
+item.name eq nil =&gt; [E0124, 'name can't be null']!! # this is a severe error
+item.addr eq nil =&gt; [E0125, 'addr can't be null']!  # this is a warning error
+</code></pre><p>All simple and straightforward.</p><p>But what about statements which depend on each other? Example: <code>item.name eq nil</code> should be evaluated only if the expression <code>item.id eq nil</code> doesn't hold.</p><p>This can easily be done by appending <code>~</code> which allows linking of statements:</p><pre><code>~item.id   eq nil =&gt; [E0123, 'id can't be null']!!!  # fatal
+~item.name eq nil =&gt; [E0124, 'name can't be null']!! # severe
+~item.addr eq nil =&gt; [E0125, 'addr can't be null']!  # warning
+</code></pre><p>So now all three statements depend on each other. The evaluation is done sequentially in order, which also allows for circuit-breaking.</p><p>Statements can also be grouped together in associated blocks. For example, a top level attribute <code>item</code> should always exist, in order to check all the remaining attributes:</p><pre><code>item eq nil =&gt; [E0122, 'item can't be null']!!!  # fatal
+{
+    ~item.id   eq nil =&gt; [E0123, 'id can't be null']!!!  # fatal
+    ~item.name eq nil =&gt; [E0124, 'name can't be null']!! # severe
+    ~item.addr eq nil =&gt; [E0125, 'addr can't be null']!  # warning
+}
+</code></pre><p>Infact another way of writing linked statements can be with blocks:</p><pre><code>item eq nil =&gt; [E0122, 'item can't be null']!!!  # fatal
+{
+    item.id eq nil =&gt; [E0123, 'id can't be null']!!!  # fatal
+    {
+        item.name eq nil =&gt; [E0124, 'name can't be null']!! # severe
+        {
+            item.addr eq nil =&gt; [E0125, 'addr can't be null']!  # warning   
+        }
+    }
+}
+</code></pre><p>Which is not so cool. Agreed!</p><p>So the blocks are more helpful when using declarations. More on this after functions.</p><p>Mooncake offers some built-in functions that can be applied to the identifiers and then checked with a literal within an expression.</p><p>Here's an example of a length(@len) function:</p><pre><code>@len item.list eq 0 =&gt; [E0126, 'list is empty']!! # severe
+</code></pre><p>It could be the case that the calculated length has to be further filtered or reused in other statements. And so we have a useful case for declarations and blocks:</p><pre><code>_x @len item.list eq 0 =&gt; [E0126, 'list is empty']!! # severe
+{
+    _x lt 2 =&gt; [E0127, 'I'd have loved more']! # warning
+    
+    _x gt ${ctx.threshold} =&gt; [E0128, 'Ok, that's way too much']! # warning
+}
+</code></pre><p>Here, a declaration <code>_x</code> holds the function <code>@len</code> value after applying to <code>item.list</code> identifier. Later on, inside the block, <code>_x</code> is used for validating some warnings.</p><p>The funny looking <code>${ctx.threshold}</code> literal, happens to reference a field in the <code>context struct</code>.</p><p>With <code>${...}</code> you have the ability to check against the referenced structures within the code that you pass to the <em><em>mooncake</em></em> executor.</p><p>Now that the rules are written and also executed (see <a href="https://github.com/talal830/mooncake">github</a> for execution details), we would have our result in a structure composing of arrays of all the fatals', severe's, warnings' encountered during validation.</p><p>Pretty much like this:</p><pre><code>{
+   "Fatal":[
+      {
+         "Code":"E0122",
+         "Info":"item is nil"
+      }
+   ],
+   "Severe":[],
+   "Warning":[]
+}
+
+</code></pre><p>For the list of all operators, functions, errors and syntax related stuff please see the Readme on mooncake's repository: <a href="https://github.com/talal830/mooncake">https://github.com/talal830/mooncake</a></p><p>Let's see where it goes from here :)</p><hr>
+        <div class="share-block">
+    <span>Share</span>
+    <a href="https://twitter.com/intent/tweet?url=http://talal.zone/mooncake/&amp;text=Mooncake%3A%20A%20simplistic%20validation%20language" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M24 4.6c-.9.4-1.8.7-2.8.8 1-.6 1.8-1.6 2.2-2.7-1 .6-2 1-3.1 1.2-.9-1-2.2-1.6-3.6-1.6-2.7 0-4.9 2.2-4.9 4.9 0 .4 0 .8.1 1.1-4.2-.2-7.8-2.2-10.2-5.2-.5.8-.7 1.6-.7 2.5 0 1.7.9 3.2 2.2 4.1-.8 0-1.6-.2-2.2-.6v.1c0 2.4 1.7 4.4 3.9 4.8-.4.1-.8.2-1.3.2-.3 0-.6 0-.9-.1.6 2 2.4 3.4 4.6 3.4-1.7 1.3-3.8 2.1-6.1 2.1-.4 0-.8 0-1.2-.1 2.2 1.4 4.8 2.2 7.5 2.2 9.1 0 14-7.5 14-14v-.6c1-.7 1.8-1.6 2.5-2.5z" fill="#1da1f2"/></svg>
+    </a>
+    &nbsp;
+    <a href="https://www.facebook.com/sharer.php?u=http://talal.zone/mooncake/" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M24 12.072a12 12 0 10-13.875 11.854v-8.385H7.078v-3.469h3.047V9.428c0-3.007 1.792-4.669 4.532-4.669a18.611 18.611 0 012.687.234v2.954H15.83a1.734 1.734 0 00-1.947 1.49 1.71 1.71 0 00-.008.385v2.25H17.2l-.532 3.469h-2.8v8.385A12 12 0 0024 12.072z" fill="#4267B2"/></svg>
+    </a>
+    &nbsp;
+    <a href="https://pinterest.com/pin/create/button/?url=http://talal.zone/mooncake/&amp;media=&amp;description=Mooncake%3A%20A%20simplistic%20validation%20language" target="_blank" rel="noopener" data-pin-do="none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4.2-.9 1.4-6 1.4-6s-.3-.8-.3-1.8c0-1.7 1-2.9 2.2-2.9 1 0 1.5.8 1.5 1.7 0 1-.7 2.6-1 4-.3 1.2.6 2.2 1.8 2.2 2.1 0 3.8-2.2 3.8-5.5 0-2.9-2.1-4.9-5-4.9-3.4 0-5.4 2.6-5.4 5.2 0 1 .4 2.1.9 2.7.1.1.1.2.1.3-.1.4-.3 1.2-.3 1.4-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.8-7.3 7.9-7.3 4.2 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4 0 0-.6 2.3-.7 2.9-.3 1-1 2.3-1.5 3.1 1 .3 2.2.5 3.4.5 6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="#E60023"/></svg>
+    </a>
+    &nbsp;
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http://talal.zone/mooncake/&amp;title=Mooncake%3A%20A%20simplistic%20validation%20language" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M23 0H1C.4 0 0 .4 0 1v22c0 .6.4 1 1 1h22c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1zM7.1 20.5H3.6V9h3.6v11.5zM5.3 7.4c-1.1 0-2.1-.9-2.1-2.1 0-1.1.9-2.1 2.1-2.1 1.1 0 2.1.9 2.1 2.1 0 1.2-.9 2.1-2.1 2.1zm15.2 13.1h-3.6v-5.6c0-1.3 0-3-1.8-3-1.9 0-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2z" fill="#2867B2"/></svg>
+    </a>
+</div>
+    </section>
+
+
+        <section class="article-comments gh-canvas">
+          <div id="disqus_thread"></div>
+          <script>
+            var disqus_config = function () {
+                this.page.url = "http://talal.zone/mooncake/";
+                this.page.identifier = "ghost-63a8dd8a6c1e0dc0f8f1b283"
+            };
+            (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://talal-zone.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
+          </script>
+        </section>
+
+</article>
+</main>
+
+
+
+
+            <aside class="read-more-wrap outer">
+                <div class="read-more inner">
+                        
+<article class="post-card post keep-ratio">
+
+    <a class="post-card-image-link" href="/fixing-semantic-errors-via-deep-learning/">
+
+        <img class="post-card-image"
+            srcset="/content/images/size/w300/2022/12/1_goFgCUHprcroxSLZvROjpg.jpeg 300w,
+                    /content/images/size/w600/2022/12/1_goFgCUHprcroxSLZvROjpg.jpeg 600w,
+                    /content/images/size/w1000/2022/12/1_goFgCUHprcroxSLZvROjpg.jpeg 1000w,
+                    /content/images/size/w2000/2022/12/1_goFgCUHprcroxSLZvROjpg.jpeg 2000w"
+            sizes="(max-width: 1000px) 400px, 800px"
+            src="/content/images/size/w600/2022/12/1_goFgCUHprcroxSLZvROjpg.jpeg"
+            alt="Fixing Semantic Errors via Deep Learning"
+            loading="lazy"
+        />
+
+
+    </a>
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="/fixing-semantic-errors-via-deep-learning/">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    Fixing Semantic Errors via Deep Learning
+                </h2>
+            </header>
+                <div class="post-card-excerpt">writing in progress...</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2020-12-19">Dec 19, 2020</time>
+                <script
+    data-ghost-comment-count="63a8f7966c1e0dc0f8f1b2ad"
+    data-ghost-comment-count-empty=""
+    data-ghost-comment-count-singular="comment"
+    data-ghost-comment-count-plural="comments"
+    data-ghost-comment-count-tag="span"
+    data-ghost-comment-count-class-name=""
+    data-ghost-comment-count-autowrap="true"
+>
+</script>
+        </footer>
+
+    </div>
+
+</article>
+                        
+<article class="post-card post keep-ratio">
+
+    <a class="post-card-image-link" href="/data-governance/">
+
+        <img class="post-card-image"
+            srcset="/content/images/size/w300/2022/12/data-governance.png 300w,
+                    /content/images/size/w600/2022/12/data-governance.png 600w,
+                    /content/images/size/w1000/2022/12/data-governance.png 1000w,
+                    /content/images/size/w2000/2022/12/data-governance.png 2000w"
+            sizes="(max-width: 1000px) 400px, 800px"
+            src="/content/images/size/w600/2022/12/data-governance.png"
+            alt="Data Governance in Apache Spark using Apache Atlas"
+            loading="lazy"
+        />
+
+
+    </a>
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="/data-governance/">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    Data Governance in Apache Spark using Apache Atlas
+                </h2>
+            </header>
+                <div class="post-card-excerpt">writing in progress...</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2020-12-10">Dec 10, 2020</time>
+                <script
+    data-ghost-comment-count="63a8f6036c1e0dc0f8f1b2a1"
+    data-ghost-comment-count-empty=""
+    data-ghost-comment-count-singular="comment"
+    data-ghost-comment-count-plural="comments"
+    data-ghost-comment-count-tag="span"
+    data-ghost-comment-count-class-name=""
+    data-ghost-comment-count-autowrap="true"
+>
+</script>
+        </footer>
+
+    </div>
+
+</article>
+                        
+<article class="post-card post no-image keep-ratio">
+
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="/using-software-product-lines-spl-in-gaming-backends/">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    Using Software Product Lines (SPL) in Gaming Backends
+                </h2>
+            </header>
+                <div class="post-card-excerpt">writing in progress...</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2020-11-30">Nov 30, 2020</time>
+                <script
+    data-ghost-comment-count="63a8f8a16c1e0dc0f8f1b2b9"
+    data-ghost-comment-count-empty=""
+    data-ghost-comment-count-singular="comment"
+    data-ghost-comment-count-plural="comments"
+    data-ghost-comment-count-tag="span"
+    data-ghost-comment-count-class-name=""
+    data-ghost-comment-count-autowrap="true"
+>
+</script>
+        </footer>
+
+    </div>
+
+</article>
+                </div>
+            </aside>
+
+
+
+    </div>
+
+    <footer class="site-footer outer">
+        <div class="inner">
+            <section class="copyright"><a href="http://talal.zone">Talal&#x27;s Zone</a> &copy; 2022</section>
+            <nav class="site-footer-nav">
+                <ul class="nav">
+    <li class="nav-latest-posts"><a href="http://talal.zone/">Latest Posts</a></li>
+</ul>
+
+            </nav>
+            <div><a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a></div>
+        </div>
+    </footer>
+
+</div>
+
+
+<script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous">
+</script>
+<script src="/assets/built/casper.js?v=d008b209e2"></script>
+<script>
+$(document).ready(function () {
+    // Mobile Menu Trigger
+    $('.gh-burger').click(function () {
+        $('body').toggleClass('gh-head-open');
+    });
+    // FitVids - Makes video embeds responsive
+    $(".gh-content").fitVids();
+});
+</script>
+
+  <script>
+    const progressBar = document.querySelector('.reading-progress');
+
+    function updateProgress() {
+      const totalHeight = document.body.clientHeight;
+      const windowHeight = document.documentElement.clientHeight;
+      const position = window.scrollY;
+      const progress = position / (totalHeight - windowHeight) * 100;
+      progressBar.setAttribute('value', progress);
+      requestAnimationFrame(updateProgress);
+    }
+
+    requestAnimationFrame(updateProgress);
+  </script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-63a8d4178f9ecb5a"></script>-->
+
+</body>
+</html>
